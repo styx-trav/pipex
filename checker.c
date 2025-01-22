@@ -35,6 +35,8 @@ t_args	*check_comms(char **argv)
 		return (free_args(args));
 	if (!find_command(args))
 		return (free_args(args));
+	if (!is_outfile(args, argv[4]))
+		return (free_args(args));
 	return (args);
 }
 
@@ -84,6 +86,30 @@ t_args	*make_args(void)
 	send->args2 = NULL;
 	send->com1 = NULL;
 	send->com2 = NULL;
-	//send->outfile = NULL;
+	send->outfile = 0;
 	return (send);
+}
+
+int	is_outfile(t_args *args, char *outfile)
+{
+	int	fd;
+
+	if (access(outfile, F_OK) == -1)
+	{
+		fd = open(outfile, O_CREAT, S_IRUSR | S_IRGRP | S_IROTH | S_IWUSR);
+		if (fd == -1)
+		{
+			perror(args->com2);
+			return (0);
+		}
+		close(fd);
+	}
+	if (access(outfile, W_OK) == -1)
+	{
+		perror(args->com2);
+		return (0);
+	}
+	args->outfile = open(outfile, O_WRONLY);
+	args->outfile = dup2(args->outfile, 7);
+	return (1);
 }

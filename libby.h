@@ -26,7 +26,7 @@ typedef struct s_args
 	char	**args2;
 	char	*com1;
 	char	*com2;
-	//char	*outfile;
+	int		outfile;
 }	t_args;
 
 //from where.c
@@ -40,6 +40,7 @@ t_args	*check_comms(char **argv);
 int		isfile(char *filename);
 char	*comm(char *command);
 t_args	*make_args(void);
+int		is_outfile(t_args *args, char *outfile);
 
 //from utils.c
 void	print(char *str);
@@ -56,5 +57,8 @@ char	**add_add(char **res, char *add);
 char	**init(char **res, int end);
 int		fill_next(char *str, char ***res, int i, int k);
 int		ct_words(char *str, char c);
+
+//from attempt.c
+int		not_main(t_args *args);
 
 #endif

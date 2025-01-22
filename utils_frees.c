@@ -59,6 +59,8 @@ t_args	*free_args(t_args *args)
 		free(args->com1);
 	if (args->com2)
 		free(args->com2);
+	if (args->outfile)
+		close(args->outfile);
 	free(args);
 	return (NULL);
 }
