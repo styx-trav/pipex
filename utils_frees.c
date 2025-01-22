@@ -51,6 +51,8 @@ void	free_prot_num(char **tab, int j)
 
 t_args	*free_args(t_args *args)
 {
+	if (!args)
+		return (NULL);
 	if (args->args1)
 		free_prot(args->args1, -2);
 	if (args->args2)

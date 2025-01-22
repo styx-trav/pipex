@@ -47,7 +47,7 @@ int	isfile(char *filename)
 	fd = open(filename, O_WRONLY);
 	if (fd == -1)
 	{
-		perror("zsh");
+		print_zsh_err(strerror(errno), filename);
 		return (0);
 	}
 	close(fd);
@@ -99,14 +99,14 @@ int	is_outfile(t_args *args, char *outfile)
 		fd = open(outfile, O_CREAT, S_IRUSR | S_IRGRP | S_IROTH | S_IWUSR);
 		if (fd == -1)
 		{
-			perror(args->com2);
+			print_zsh_err(strerror(errno), outfile);
 			return (0);
 		}
 		close(fd);
 	}
 	if (access(outfile, W_OK) == -1)
 	{
-		perror(args->com2);
+		print_zsh_err(strerror(errno), outfile);
 		return (0);
 	}
 	args->outfile = open(outfile, O_WRONLY);

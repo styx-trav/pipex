@@ -28,8 +28,7 @@ int	find_command(t_args *args)
 		if (access(com, X_OK) == -1)
 		{
 			free(com);
-			print("zsh: command not found: ");
-			print_nl(args->args1[0]);
+			print_zsh_err("command not found", args->args1[0]);
 			return (0);
 		}
 	}
@@ -54,8 +53,7 @@ int	find_command2(t_args *args)
 		if (access(com, X_OK) == -1)
 		{
 			free(com);
-			print("zsh: command not found: ");
-			print_nl(args->args2[0]);
+			print_zsh_err("command not found", args->args2[0]);
 			return (0);
 		}
 	}

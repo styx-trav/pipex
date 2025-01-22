@@ -19,6 +19,8 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <stdio.h>
+# include <errno.h>
+# include <string.h>
 
 typedef struct s_args
 {
@@ -45,6 +47,7 @@ int		is_outfile(t_args *args, char *outfile);
 //from utils.c
 void	print(char *str);
 void	print_nl(char *str);
+void	print_zsh_err(char *str, char *name);
 
 //from utils_free.c
 void	free_prot(char **tab, int j);

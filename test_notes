@@ -1,0 +1,5 @@
+no such file ::check
+wrong permission ::check
+multiple errors need multiple disps (means keep the checks running even after a check fails.)
+
+the program still runs ==> should still run. ignore the leaks, ig, so the rest of the asks can still be run.
