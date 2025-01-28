@@ -12,49 +12,20 @@
 
 #include "libby.h"
 
-t_args	*check_comms(char **argv)
-{
-	t_args	*args;
-
-	if (!isfile(argv[1]))
-		return (NULL);
-	args = make_args();
-	if (!args)
-		return (NULL);
-	args->com1 = comm(argv[2]);
-	if (!args->com1)
-		return (free_args(args));
-	args->com2 = comm(argv[3]);
-	if (!args->com2)
-		return (free_args(args));
-	args->args1 = split(argv[2], ' ', argv[1]);
-	if (!args->args1)
-		return (free_args(args));
-	args->args2 = split(argv[3], ' ', NULL);
-	if (!args->args2)
-		return (free_args(args));
-	if (!find_command(args))
-		return (free_args(args));
-	if (!is_outfile(args, argv[4]))
-		return (free_args(args));
-	return (args);
-}
-
-int	isfile(char *filename)
+static void	isfile(t_args *args, char *filename)
 {
 	int	fd;
 
-	fd = open(filename, O_WRONLY);
+	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
 		print_zsh_err(strerror(errno), filename);
-		return (0);
+		return ;
 	}
-	close(fd);
-	return (1);
+	args->infile = fd;
 }
 
-char	*comm(char *command)
+static char	*comm(char *command)
 {
 	char	*result;
 	int		i;
@@ -75,7 +46,7 @@ char	*comm(char *command)
 	return (result);
 }
 
-t_args	*make_args(void)
+static t_args	*make_args(void)
 {
 	t_args	*send;
 
@@ -86,11 +57,13 @@ t_args	*make_args(void)
 	send->args2 = NULL;
 	send->com1 = NULL;
 	send->com2 = NULL;
-	send->outfile = 0;
+	send->env = NULL;
+	send->outfile = -1;
+	send->infile = -1;
 	return (send);
 }
 
-int	is_outfile(t_args *args, char *outfile)
+static void	is_outfile(t_args *args, char *outfile)
 {
 	int	fd;
 
@@ -100,16 +73,41 @@ int	is_outfile(t_args *args, char *outfile)
 		if (fd == -1)
 		{
 			print_zsh_err(strerror(errno), outfile);
-			return (0);
+			return ;
 		}
 		close(fd);
 	}
 	if (access(outfile, W_OK) == -1)
 	{
 		print_zsh_err(strerror(errno), outfile);
-		return (0);
+		return ;
 	}
 	args->outfile = open(outfile, O_WRONLY);
 	args->outfile = dup2(args->outfile, 7);
-	return (1);
+}
+
+t_args	*check_comms(char **argv)
+{
+	t_args	*args;
+
+	args = make_args();
+	if (!args)
+		return (NULL);
+	isfile(args, argv[1]);
+	args->com1 = comm(argv[2]);
+	if (!args->com1)
+		return (free_args(args));
+	args->com2 = comm(argv[3]);
+	if (!args->com2)
+		return (free_args(args));
+	args->args1 = split(argv[2], ' ');
+	if (!args->args1)
+		return (free_args(args));
+	args->args2 = split(argv[3], ' ');
+	if (!args->args2)
+		return (free_args(args));
+	if (!find_command(args))
+		return (free_args(args));
+	is_outfile(args, argv[4]);
+	return (args);
 }

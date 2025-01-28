@@ -12,8 +12,6 @@
 
 #include "libby.h"
 
-//going to wait on that second child but not first i think
-
 static int	child_2(t_args *args, int pipefd[2])
 {
 	close(0);
@@ -21,7 +19,7 @@ static int	child_2(t_args *args, int pipefd[2])
 	close(1);
 	args->outfile = dup2(args->outfile, 1);
 	pipefd[0] = dup2(pipefd[0], 0);
-	if (execve(args->args2[0], args->args2, NULL) == -1)
+	if (execve(args->args2[0], args->args2, args->env) == -1)
 	{
 		perror(args->com2);
 		return (EXIT_FAILURE);
@@ -34,8 +32,10 @@ static int	child_1(t_args *args, int pipefd[2])
 {
 	close(1);
 	close(pipefd[0]);
+	close(0);
+	dup2(args->infile, 0);
 	pipefd[1] = dup2(pipefd[1], 1);
-	if (execve(args->args1[0], args->args1, NULL) == -1)
+	if (execve(args->args1[0], args->args1, args->env) == -1)
 	{
 		perror(args->com1);
 		return (EXIT_FAILURE);
@@ -44,7 +44,7 @@ static int	child_1(t_args *args, int pipefd[2])
 	return (EXIT_SUCCESS);
 }
 
-int	not_main(t_args *args)
+int	calling(t_args *args)
 {
 	pid_t	child1;
 	pid_t	child2;

@@ -12,57 +12,7 @@
 
 #include "libby.h"
 
-int	find_command(t_args *args)
-{
-	char	*com;
-
-	com = join("/bin/", args->args1[0]);
-	if (!com)
-		return (0);
-	if (access(com, X_OK) == -1)
-	{
-		free(com);
-		com = join("/sbin/", args->args1[0]);
-		if (!com)
-			return (0);
-		if (access(com, X_OK) == -1)
-		{
-			free(com);
-			print_zsh_err("command not found", args->args1[0]);
-			return (0);
-		}
-	}
-	free(args->args1[0]);
-	args->args1[0] = com;
-	return (find_command2(args));
-}
-
-int	find_command2(t_args *args)
-{
-	char	*com;
-
-	com = join("/bin/", args->args2[0]);
-	if (!com)
-		return (0);
-	if (access(com, X_OK) == -1)
-	{
-		free(com);
-		com = join("/sbin/", args->args2[0]);
-		if (!com)
-			return (0);
-		if (access(com, X_OK) == -1)
-		{
-			free(com);
-			print_zsh_err("command not found", args->args2[0]);
-			return (0);
-		}
-	}
-	free(args->args2[0]);
-	args->args2[0] = com;
-	return (1);
-}
-
-char	*copy(char *s1, char *write, int i)
+static char	*copy(char *s1, char *write, int i)
 {
 	int	j;
 
@@ -75,7 +25,7 @@ char	*copy(char *s1, char *write, int i)
 	return (write);
 }
 
-char	*join(char *s1, char *s2)
+static char	*join(char *s1, char *s2)
 {
 	char	*res;
 	int		i;
@@ -94,4 +44,56 @@ char	*join(char *s1, char *s2)
 	res = copy(s2, res, i);
 	res[i + j] = '\0';
 	return (res);
+}
+
+static int	find_command2(t_args *args)
+{
+	char	*com;
+
+	com = join("/bin/", args->args2[0]);
+	if (!com)
+		return (0);
+	if (access(com, X_OK) == -1)
+	{
+		free(com);
+		com = join("/sbin/", args->args2[0]);
+		if (!com)
+			return (0);
+		if (access(com, X_OK) == -1)
+		{
+			free(com);
+			if (access(args->args2[0], X_OK) == -1)
+				print_zsh_err("command not found", args->args1[0]);
+			return (1);
+		}
+	}
+	free(args->args2[0]);
+	args->args2[0] = com;
+	return (1);
+}
+
+int	find_command(t_args *args)
+{
+	char	*com;
+
+	com = join("/bin/", args->args1[0]);
+	if (!com)
+		return (0);
+	if (access(com, X_OK) == -1)
+	{
+		free(com);
+		com = join("/sbin/", args->args1[0]);
+		if (!com)
+			return (0);
+		if (access(com, X_OK) == -1)
+		{
+			free(com);
+			if (access(args->args1[0], X_OK) == -1)
+				print_zsh_err("command not found", args->args1[0]);
+			return (1);
+		}
+	}
+	free(args->args1[0]);
+	args->args1[0] = com;
+	return (find_command2(args));
 }

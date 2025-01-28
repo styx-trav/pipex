@@ -12,46 +12,7 @@
 
 #include "libby.h"
 
-char	**split(char *str, char c, char *add)
-{
-	int		i;
-	int		j;
-	int		k;
-	char	**res;
-
-	i = ct_words(str, c);
-	if (add)
-		i++;
-	res = malloc(sizeof(char *) * (i + 1));
-	if (!res)
-		return (NULL);
-	res = init(res, i);
-	k = 0;
-	j = 0;
-	while (k < i)
-	{
-		j = fill_next(str, &res, j, k);
-		if (j == -1)
-			return (NULL);
-		k++;
-	}
-	if (add)
-		res = add_add(res, add);
-	return (res);
-}
-
-char	**add_add(char **res, char *add)
-{
-	int	i;
-
-	i = 0;
-	while (res[i] != NULL)
-		i++;
-	res[i] = add;
-	return (res);
-}
-
-char	**init(char **res, int end)
+static char	**init(char **res, int end)
 {
 	int	i;
 
@@ -64,7 +25,7 @@ char	**init(char **res, int end)
 	return (res);
 }
 
-int	fill_next(char *str, char ***res, int i, int k)
+static int	fill_next(char *str, char ***res, int i, int k)
 {
 	int	ct;
 
@@ -78,7 +39,7 @@ int	fill_next(char *str, char ***res, int i, int k)
 	(*res)[k] = malloc(ct + 1);
 	if (!((*res)[k]))
 	{
-		free_prot_num(*res, k);
+		free_prot(*res, k);
 		return (-1);
 	}
 	ct = 0;
@@ -92,7 +53,7 @@ int	fill_next(char *str, char ***res, int i, int k)
 	return (i);
 }
 
-int	ct_words(char *str, char c)
+static int	ct_words(char *str, char c)
 {
 	int	i;
 	int	ct;
@@ -106,4 +67,28 @@ int	ct_words(char *str, char c)
 		i++;
 	}
 	return (ct);
+}
+
+char	**split(char *str, char c)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	**res;
+
+	i = ct_words(str, c);
+	res = malloc(sizeof(char *) * (i + 1));
+	if (!res)
+		return (NULL);
+	res = init(res, i);
+	k = 0;
+	j = 0;
+	while (k < i)
+	{
+		j = fill_next(str, &res, j, k);
+		if (j == -1)
+			return (NULL);
+		k++;
+	}
+	return (res);
 }

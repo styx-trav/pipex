@@ -1,1 +1,14 @@
-0
+total 68
+-rw-rw-r-- 1 styx styx  1937 Jan 28 17:01 atttempt.c
+-rw-rw-r-- 1 styx styx  2816 Jan 28 17:21 checker.c
+-rw-rw-r-- 1 styx styx  2072 Jan 28 17:16 libby.h
+-rw-rw-r-- 1 styx styx  1203 Jan 28 16:14 Makefile
+-rwxrwxr-x 1 styx styx     2 Jan 28 16:14 outfile
+-rw-rw-r-- 1 styx styx     0 Jan 28 17:25 outfile1
+-rwxrwxr-x 1 styx styx 21688 Jan 28 17:07 pipex
+-rw-rw-r-- 1 styx styx  2149 Jan 28 16:14 split.c
+-rw-rw-r-- 1 styx styx  1179 Jan 28 17:07 test.c
+-rwxrwxr-x 1 styx styx   308 Jan 28 16:14 test_notes
+-rw-rw-r-- 1 styx styx  1408 Jan 28 16:14 utils.c
+-rw-rw-r-- 1 styx styx  1556 Jan 28 16:14 utils_frees.c
+-rw-rw-r-- 1 styx styx  2148 Jan 28 16:14 where.c

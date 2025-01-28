@@ -29,39 +29,27 @@ typedef struct s_args
 	char	*com1;
 	char	*com2;
 	int		outfile;
+	int             infile;
+	char    **env;
 }	t_args;
 
 //from where.c
 int		find_command(t_args *args);
-int		find_command2(t_args *args);
-char	*copy(char *s1, char *write, int i);
-char	*join(char *s1, char *s2);
 
-//from checker.c
+//from parsing.c
 t_args	*check_comms(char **argv);
-int		isfile(char *filename);
-char	*comm(char *command);
-t_args	*make_args(void);
-int		is_outfile(t_args *args, char *outfile);
 
 //from utils.c
 void	print(char *str);
 void	print_nl(char *str);
 void	print_zsh_err(char *str, char *name);
-
-//from utils_free.c
 void	free_prot(char **tab, int j);
-void	free_prot_num(char **tab, int j);
 t_args	*free_args(t_args *args);
 
 //from split.c
-char	**split(char *str, char c, char *add);
-char	**add_add(char **res, char *add);
-char	**init(char **res, int end);
-int		fill_next(char *str, char ***res, int i, int k);
-int		ct_words(char *str, char c);
+char	**split(char *str, char c);
 
-//from attempt.c
-int		not_main(t_args *args);
+//from distrib.c
+int		calling(t_args *args);
 
 #endif

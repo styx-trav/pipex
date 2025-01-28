@@ -14,12 +14,11 @@ CC=cc
 FLAGS=-Wall -Werror -Wextra
 NAME=pipex
 LIB=libby.h
-SRC=atttempt.c\
-    checker.c\
+SRC=distrib.c\
+    parsing.c\
     utils.c\
-    utils_frees.c\
     where.c\
-    test.c\
+    main.c\
     split.c
 
 all: $(NAME)

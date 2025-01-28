@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: naorakot <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "libby.h"
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
 	t_args	*tester;
 	int		i;
@@ -22,6 +22,7 @@ int	main(int argc, char **argv)
 	tester = check_comms(argv);
 	if (!tester)
 		return (0);
-	i = not_main(tester);
+	tester->env = envp;
+	i = calling(tester);
 	return (i);
 }
