@@ -14,10 +14,10 @@ CC=cc
 FLAGS=-Wall -Werror -Wextra
 NAME=pipex
 LIB=libby.h
-SRC=distrib.c\
-    parsing.c\
+SRC=parsing.c\
     utils.c\
     where.c\
+    where2.c\
     main.c\
     split.c
 

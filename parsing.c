@@ -86,7 +86,7 @@ static void	is_outfile(t_args *args, char *outfile)
 	args->outfile = dup2(args->outfile, 7);
 }
 
-t_args	*check_comms(char **argv)
+t_args	*check_comms(char **argv, char **env)
 {
 	t_args	*args;
 
@@ -106,7 +106,8 @@ t_args	*check_comms(char **argv)
 	args->args2 = split(argv[3], ' ');
 	if (!args->args2)
 		return (free_args(args));
-	if (!find_command(args))
+	args->env = env;
+	if (!find_commands(args))
 		return (free_args(args));
 	is_outfile(args, argv[4]);
 	return (args);

@@ -34,10 +34,15 @@ typedef struct s_args
 }	t_args;
 
 //from where.c
-int		find_command(t_args *args);
+int		find_command_reg(t_args *args);
+
+//from where2.c
+char	*copy(char *s1, char *write, int i);
+char	*join(char *s1, char *s2);
+int	find_commands(t_args *args);
 
 //from parsing.c
-t_args	*check_comms(char **argv);
+t_args	*check_comms(char **argv, char **env);
 
 //from utils.c
 void	print(char *str);

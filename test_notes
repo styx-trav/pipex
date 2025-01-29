@@ -5,3 +5,5 @@ multiple errors need multiple disps (means keep the checks running even after a 
 the program still runs ==> should still run. ignore the leaks, ig, so the rest of the asks can still be run.
 
 also, environment to add somewhere somehow, to look into
+
+currently adding the PATH while loop read from environment ; will keep the other funcs for the env=NULL attempt.
